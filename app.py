@@ -73,8 +73,12 @@ def infer_strategy(brand, api_key):
         headers={"x-api-key": api_key, "anthropic-version": "2023-06-01", "content-type": "application/json"},
         method="POST",
     )
-    with urllib.request.urlopen(req, timeout=40) as resp:
-        data = json.loads(resp.read().decode())
+    try:
+        with urllib.request.urlopen(req, timeout=40) as resp:
+            data = json.loads(resp.read().decode())
+    except urllib.error.HTTPError as he:
+        detail = he.read().decode()[:200]
+        raise RuntimeError("Claude API error " + str(he.code) + ": " + detail)
     text = "".join(b.get("text", "") for b in data.get("content", []))
     m = re.search(r"\{.*\}", text, re.S)
     parsed = json.loads(m.group(0))
@@ -163,7 +167,7 @@ def api_analyze():
         _save_cache(_cache)
         return jsonify(result)
     except Exception as e:
-        return jsonify(dict(SAMPLE, notice="Live request failed (" + type(e).__name__ + ") - showing sample analysis."))
+        return jsonify(dict(SAMPLE, notice="Live failed: " + str(e)[:160] + " — showing sample."))
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT","5000")), debug=False)
