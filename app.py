@@ -333,6 +333,44 @@ def compare():
     return resp
 
 
+# ---------------------------------------------------------------------------
+# Waitlist (Pro launch email capture)
+# ---------------------------------------------------------------------------
+_WAITLIST_FILE = pathlib.Path(os.environ.get("WAITLIST_FILE", "waitlist.json"))
+
+
+def _load_waitlist():
+    try:
+        return json.loads(_WAITLIST_FILE.read_text())
+    except Exception:
+        return []
+
+
+def _save_waitlist(wl):
+    try:
+        tmp = _WAITLIST_FILE.with_suffix(".tmp")
+        tmp.write_text(json.dumps(wl))
+        os.replace(str(tmp), str(_WAITLIST_FILE))
+    except Exception:
+        logger.exception("Failed to write waitlist file")
+
+
+_waitlist = _load_waitlist()
+
+
+@app.route("/api/waitlist", methods=["POST"])
+def api_waitlist():
+    data = request.get_json(force=True, silent=True) or {}
+    email = (data.get("email") or "").strip().lower()
+    if not email or "@" not in email or len(email) > 200:
+        return jsonify({"error": "Invalid email"}), 400
+    with _live_lock:
+        if email not in _waitlist and len(_waitlist) < 10000:
+            _waitlist.append(email)
+            _save_waitlist(_waitlist)
+    return jsonify({"ok": True})
+
+
 @app.route("/api/analyze", methods=["POST"])
 def api_analyze():
     global _live_runs

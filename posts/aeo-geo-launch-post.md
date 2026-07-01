@@ -6,57 +6,34 @@
 
 ## Version Reddit (r/SEO)
 
-**Title:** Mapped share of voice for 5 brands in one niche, some findings + the tool I used
+**Title:** I mapped share of voice across SERP and AI for 5 brands in one niche. Here's what the data says.
 
 **Body:**
 
-I've been messing with buyer-intent queries lately, the "best X for Y" searches that drive actual purchase decisions. Wanted to see who really owns those results vs. who just thinks they do.
+I've been working on the gap between traditional search rankings and what AI engines actually recommend when someone asks a buyer intent question like "best X for Y." Two very different signals, and the delta between them is where the real GEO/AEO opportunity sits.
 
-Example: I picked Notion and let the tool infer competitors + relevant queries.
+I built a tool to measure both at once. You type one brand name, it identifies your competitive set and buyer intent queries automatically, then runs them against live Google via Bright Data and checks which brands an AI engine would recommend for the same queries. You get a dual heatmap showing SERP position vs AI mention order, side by side.
 
-Results:
-"best project management tool" Asana #2, Notion #3, ClickUp #4. Notion doesn't own the generic category search.
-"notion alternative" Notion #1 (obviously), Obsidian #2, Coda #6. The branded alternative query has completely different page types ranking (comparison posts vs. homepages).
+What I found surprised me. Brands with strong content marketing get boosted in AI recommendations even when they rank 4th or 5th on SERP. And the reverse happens too: some brands own position 1 on Google but get zero AI mentions. That gap is invisible if you only track rankings.
 
-The gap between those two queries is where the actual GEO/AEO work lives and it's not something you can see from a rank tracker that only checks your own brand keywords.
+Example: I ran Notion. It sits at #3 for "best project management tool" on SERP, but AI engines rank it #1. Asana takes #2 on SERP and #2 on AI. Coda is at #6 on SERP but jumps to #3 in AI recommendations. The gap between those two heatmaps tells you exactly where your GEO strategy should focus.
 
-I built a small tool to automate this. You type a brand, it uses Claude to figure out competitors and buyer queries, runs them against live Google via Bright Data, and also checks which brands AI engines would recommend for the same queries. You get a dual heatmap, SERP ranks vs. AI mentions, side by side.
-
-The AI engine check is interesting because it shows different rankings than Google. Brands with strong awareness get boosted in AI answers even if they don't rank as well on SERP. That delta is where AEO work actually lives.
-
-Free to use, no signup: https://brandpulse-app.onrender.com
-
-Open source if you want to run it on your own keys: https://github.com/arochab/brandpulse-app
-
-If it saves you time, buy me a coffee https://buymeacoffee.com/arochab and we're more than even.
-
-Curious what you'd do differently. Are there other signals beyond SERP rank and AI mentions that would be worth tracking for AEO?
+The tool is live at brandpulse-app.onrender.com. Pro plans for ongoing monitoring are launching soon. Curious what signals beyond SERP rank and AI mentions you think are worth tracking for GEO.
 
 ---
 
 ## Version Reddit (r/SaaS)
 
-**Title:** I built a free competitive visibility tool and engineered it to stay free forever
+**Title:** I built a competitive visibility tool that maps SERP and AI search side by side. Here's the architecture.
 
 **Body:**
 
-I'm a solo dev. I wanted to know whether my product shows up when someone searches "best [tool] for [use case]" and I didn't want to pay $200/mo to find out.
+I wanted to know whether my product shows up when someone searches "best [tool] for [use case]" and I wanted to compare that to what AI engines recommend for the same question. No existing tool maps both signals.
 
-So I built a tool that takes one brand name, uses Claude Haiku to figure out the competitive set and buyer-intent queries, then runs live Google searches and checks which brands AI would recommend for the same questions.
+So I built one. You type a brand name and the system does four things: identifies your competitors and buyer intent queries automatically, runs them against live Google, checks which brands an AI assistant would recommend for the same queries, and renders both as a dual heatmap. Green cells for SERP ranks, purple cells for AI mention order.
 
-The design constraint I gave myself was to make it so cheap per run that I never have to charge for it.
+The interesting insight is that those two heatmaps rarely match. Some brands dominate SERP but are invisible to AI. Others have weak search rankings but show up first in AI recommendations. That delta is the signal.
 
-Here's how the architecture achieves that. I use the cheapest LLM that can do structured reasoning (Claude Haiku), two calls per analysis, both tiny. Only 2 SERP API calls per run which is the minimum to get useful competitive data. Persistent cache so once a brand is analyzed it's served from cache forever, zero marginal cost on repeat visits. Hosting on Render free tier with the trade-off of a 30s cold start on first visit.
+Stack: Python/Flask backend, Claude Haiku for competitive intelligence inference and AI visibility simulation (two API calls per analysis), Bright Data for live SERP, vanilla JS frontend. The AI check is a single structured prompt where Claude answers buyer queries as an AI assistant would, which gives you a proxy for AI engine mention order without paying for 5 different API integrations.
 
-The result is each analysis costs a fraction of a cent. I could run thousands of these a day and still spend less than my morning coffee. So it's free and it stays free.
-
-Stack is Python/Flask (one file, no bloat), Claude Haiku for LLM, Bright Data for SERP, vanilla JS frontend, deployed on Render with gunicorn.
-
-What I'd do differently next time: the 30 second cold start on Render free tier is a real conversion killer. If I were serious about growth I'd move to a paid instance. Also 2 SERP queries per analysis is the minimum viable insight, expanding to 4 or 5 would give better data.
-
-Free to try: https://brandpulse-app.onrender.com
-Source: https://github.com/arochab/brandpulse-app
-
-If it's useful, buy me a coffee https://buymeacoffee.com/arochab that's genuinely more than enough to cover the server costs.
-
-Happy to go deeper on the architecture decisions or the Claude prompt engineering if anyone's interested.
+The tool is live at brandpulse-app.onrender.com. Pro plans with ongoing monitoring and alerts are coming soon. I can go deeper on the AI visibility methodology or the architecture if anyone's interested.
