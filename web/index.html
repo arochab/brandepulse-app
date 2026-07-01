@@ -4,20 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BrandPulse — Who owns the search results in your niche?</title>
-<meta name="description" content="Type one brand. Get a live competitive visibility heatmap in 10 seconds. Free, open source, powered by Claude + Bright Data.">
+<meta name="description" content="Type one brand. See who owns the search results and AI recommendations in your niche. Live competitive visibility heatmap in 10 seconds.">
 <link rel="canonical" href="https://brandpulse-app.onrender.com/">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://brandpulse-app.onrender.com/">
 <meta property="og:title" content="BrandPulse — Who owns the search results in your niche?">
-<meta property="og:description" content="Type one brand. Get a live competitive visibility heatmap in 10 seconds. Free, open source.">
+<meta property="og:description" content="Type one brand. See who owns the search results and AI recommendations in your niche. Live dual heatmap.">
 <meta property="og:image" content="https://brandpulse-app.onrender.com/demo-brandpulseapp.gif">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="BrandPulse — Who owns the search results in your niche?">
-<meta name="twitter:description" content="Type one brand. Get a live competitive visibility heatmap in 10 seconds. Free, open source.">
+<meta name="twitter:description" content="Type one brand. See who owns the search results and AI recommendations in your niche. Live dual heatmap.">
 <meta name="twitter:image" content="https://brandpulse-app.onrender.com/demo-brandpulseapp.gif">
 
 <meta name="theme-color" content="#f4f2ec">
@@ -110,15 +110,16 @@
   .stage .bar i{display:block;height:100%;width:30%;background:var(--sage);border-radius:2px;animation:slide 1.3s ease-in-out infinite;}
   @keyframes slide{0%{margin-left:-30%;}100%{margin-left:100%;}}
 
-  .costline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:22px;padding-top:18px;border-top:1px dashed var(--line);flex-wrap:wrap;}
-  .cost{font-size:13px;color:var(--muted);line-height:1.5;}
-  .cost b{color:var(--sage-d);font-weight:600;font-variant-numeric:tabular-nums;}
-  .cost .joke{color:var(--faint);font-size:12px;}
-
-  .coffee-link{font-size:12px;color:#b8935a;text-decoration:none;white-space:nowrap;transition:color .15s;}
-  .coffee-link:hover{color:#8a6a2e;}
+  .pro-cta{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:22px;padding-top:18px;border-top:1px dashed var(--line);flex-wrap:wrap;}
+  .pro-cta .label{font-size:13px;color:var(--muted);}
+  .pro-cta input{font-family:inherit;font-size:13px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;outline:none;background:rgba(255,255,255,.7);color:var(--ink);width:200px;transition:border-color .2s;}
+  .pro-cta input:focus{border-color:var(--sage);}
+  .pro-cta button{font-family:inherit;font-size:12px;font-weight:500;padding:8px 14px;border:none;border-radius:8px;background:var(--sage);color:#fff;cursor:pointer;transition:opacity .15s;}
+  .pro-cta button:hover{opacity:.85;}
+  .pro-cta .ok{font-size:12px;color:var(--sage);display:none;}
   footer{text-align:center;margin-top:30px;font-size:12px;color:var(--faint);}
   footer a{color:var(--sage);text-decoration:none;}
+  footer .coffee{color:#b8935a;}
   @media(max-width:540px){h1{font-size:31px;}.bar-input{flex-direction:column;}.top h2{font-size:21px;}.heron .n{font-size:35px;}}
 </style>
 </head>
@@ -126,9 +127,9 @@
 <div class="aurora"></div><div class="grain"></div>
 <div id="tip" class="tip"></div>
 <div class="wrap">
-  <div class="eyebrow"><span class="dot"></span> AI Visibility · powered by Claude</div>
-  <h1>Type your brand.<br>See who you're really up against.</h1>
-  <p class="lede">No setup. Claude infers your sector, competitors and buyer queries — then maps who wins each search.</p>
+  <div class="eyebrow"><span class="dot"></span> AI Visibility Intelligence</div>
+  <h1>Your brand is invisible<br>in AI search. This shows you where.</h1>
+  <p class="lede">One input. BrandPulse maps who owns the search results and AI recommendations in your niche. Live data, not guesswork.</p>
 
   <div class="bar-input">
     <input id="brand" type="text" placeholder="e.g. Notion, Stripe, Figma…" value="Notion" onkeydown="if(event.key==='Enter')run(true)"/>
@@ -149,7 +150,7 @@
   </div>
 
   <div id="out"></div>
-  <footer>Built by <a href="https://github.com/arochab">Adam Chabbi</a> · <a href="https://github.com/arochab/brandpulse-app">source</a> · <a href="/compare">why BrandPulse?</a> · <a href="https://buymeacoffee.com/arochab" target="_blank" rel="noopener" style="color:#b8935a;">☕ buy me a coffee</a></footer>
+  <footer>Built by <a href="https://github.com/arochab">Adam Chabbi</a> · <a href="/compare">why BrandPulse?</a> · <a href="https://buymeacoffee.com/arochab" target="_blank" rel="noopener" class="coffee">☕</a></footer>
 </div>
 
 <script>
@@ -190,17 +191,13 @@
   function countUp(el,target){var t0=null,dur=850;function step(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/dur,1);var e=1-Math.pow(1-p,3);el.textContent=(target*e).toFixed(1);if(p<1)requestAnimationFrame(step);else el.textContent=target.toFixed(1);}requestAnimationFrame(step);}
 
 
-  function costBlock(d){
-    var coffee='<a class="coffee-link" href="https://buymeacoffee.com/arochab" target="_blank" rel="noopener">☕ buy me a coffee</a>';
-    var c=d.cost;
-    if(c==null) return '<div class="costline"><div class="cost">Sample mode — no API calls, nothing spent.</div>'+coffee+'</div>';
-    var cents=(c*100);
-    var disp=cents<1?('$'+c.toFixed(5)):('$'+c.toFixed(4));
-    var coffees=Math.max(1,Math.round(5/Math.max(c,0.0001)/1000)*1000);
-    var joke;
-    if(d.cached) joke='This one was <b>free</b> — pulled from cache. Adam thanks you. ☕ stays full.';
-    else joke='This analysis cost Adam exactly <b>'+disp+'</b>. He’d need ~'+coffees.toLocaleString()+' of these to equal one coffee — so the math says: <span class="joke">buy him the coffee instead.</span>';
-    return '<div class="costline"><div class="cost">'+joke+'</div>'+coffee+'</div>';
+  function proCta(){
+    return ‘<div class="pro-cta"><span class="label">Pro plans with ongoing monitoring coming soon.</span><input id="proEmail" type="email" placeholder="your@email.com"><button onclick="notifyMe()">Notify me</button><span class="ok" id="proOk">You\’re on the list.</span></div>’;
+  }
+  function notifyMe(){
+    var em=document.getElementById(‘proEmail’);var ok=document.getElementById(‘proOk’);
+    if(!em||!em.value||em.value.indexOf(‘@’)<1)return;
+    fetch(‘/api/waitlist’,{method:’POST’,headers:{‘Content-Type’:’application/json’},body:JSON.stringify({email:em.value})}).then(function(){ok.style.display=’inline’;em.style.display=’none’;em.nextElementSibling.style.display=’none’;}).catch(function(){ok.textContent=’Something went wrong.’;ok.style.display=’inline’;ok.style.color=’var(--muted)’;});
   }
 
   function buildInsight(r,brandName){
@@ -220,14 +217,14 @@
   function render(d){
     var r=d.ranking||[],queries=d.queries||[],brandName=d.brand||'';
     var present=r.filter(function(x){return x.share_of_voice>0;});
-    var badge=d.cached?'<span class="badge cached">Cached · free</span>':(d.mode==='live'?'<span class="badge live"><span class="lv"></span>Live · Claude + Bright Data</span>':'<span class="badge demo">Sample</span>');
+    var badge=d.cached?'<span class="badge cached">Cached</span>':(d.mode==='live'?'<span class="badge live"><span class="lv"></span>Live analysis</span>':'<span class="badge demo">Sample</span>');
     var notice=d.notice?'<div class="stage" style="padding:0 0 14px">'+esc(d.notice)+'</div>':'';
     var sector=d.sector?'<div class="sector">Claude pegged the sector as <b>'+esc(d.sector)+'</b> — '+r.length+' rivals across '+queries.length+' buyer '+(queries.length>1?'queries':'query')+'.</div>':'';
 
     if(present.length===0){
       document.getElementById('out').innerHTML='<div class="card">'+badge+notice+sector+
         '<div class="empty-state"><div class="big">No one shows up — including '+esc(brandName)+'</div>'+
-        '<div class="desc">None of these brands appear for these searches. Either the category is wide open, or the queries are too niche.</div></div>'+costBlock(d)+'</div>';
+        '<div class="desc">None of these brands appear for these searches. Either the category is wide open, or the queries are too niche.</div></div>'+proCta()+'</div>';
       return;
     }
     var leader=present[0];
@@ -299,7 +296,7 @@
       '<div><div class="k">Best avg. rank</div><div class="v">'+(bestRank?esc(bestRank.brand)+' · '+bestRank.avg_rank:'—')+'</div></div>'+
       '<div><div class="k">Blind spot</div><div class="v">'+esc(blind.brand)+' · '+esc(blind.query_coverage)+'</div></div>'+
       (aiLeader?'<div><div class="k">AI engine leader</div><div class="v">'+esc(aiLeader.brand)+' · avg #'+aiLeader.ai_avg_rank+'</div></div>':'')+
-      '</div>';})()+costBlock(d)+'</div>';
+      '</div>';})()+proCta()+'</div>';
 
     countUp(document.getElementById('heroNum'),leader.share_of_voice);
     // diagonal cascade reveal
