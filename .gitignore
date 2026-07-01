@@ -20,5 +20,10 @@ venv/
 .DS_Store
 Thumbs.db
 
-# Démo lourde (exclue du repo)
-demo-brandpulseapp.gif
+# Whitelist: files needed despite broader ignore rules
+!web/demo-brandpulseapp.gif
+!render.yaml
+!requirements.txt
+
+# Démo lourde — servie depuis web/ pour og:image
+# (web/demo-brandpulseapp.gif is whitelisted below)
